@@ -5,7 +5,7 @@ public class Runner {
 
     @Karate.Test
     Karate userGet(){
-        return Karate.run("consultar-cuenta-ahorros-activa-get.feature").relativeTo(getClass());
+        return Karate.run().relativeTo(getClass());
     }
 
 
