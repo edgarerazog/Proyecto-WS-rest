@@ -16,7 +16,7 @@ pipeline {
                         //bat ("gradle clean test -Dcucumber.options='--tag @WomClienteNatural' aggregate") //Ejecución en agente Windows con parametro jenkins
                         //sh ("gradle clean test -DRunner=\"${Runner}\" aggregate") //Ejecución en agente Linux con parametro jenkins
                         //bat("gradle clean test --tests \"*${Runner}*\" aggregate") //Ejecución en agente windows sin parametro jenkins
-                        bat("gradle clean test --tests") //Ejecución en agente windows sin parametro jenkins
+                        bat("./gradlew test") //Ejecución en agente windows sin parametro jenkins
                         echo 'Test Ejecutados sin Fallo'
                         currentBuild.result = 'SUCCESS'
                     }
