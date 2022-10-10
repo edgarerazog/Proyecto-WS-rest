@@ -17,6 +17,8 @@ Feature: check a count - 201A
       Then status 200
       * jsonResponse.requestHour = response.requestHour
       And match response == jsonResponse
+      And def token = var_string
+      And def countNumber = response.countNumber
 
 
 
