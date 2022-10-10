@@ -28,7 +28,7 @@ pipeline {
             }
         }
 
-        stage('Generar evidencia'){
+        /*stage('Generar evidencia'){
             steps
                     {
                         script
@@ -59,5 +59,5 @@ pipeline {
                                 }
                     }
         }
-    }
+    }*/
 }
