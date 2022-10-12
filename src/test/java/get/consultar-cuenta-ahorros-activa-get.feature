@@ -12,6 +12,7 @@ Feature: check a count - 201A
     * configure headers = { 'Authorization': '#(var_string)'}
 
     Scenario: consultar cuenta exitoso
+      http://10.160.1.90/GIROS_tst/GYFCOBOLServices/wsgyg15.asmx
       Given url "http://10.160.1.90/WSGYG25REST_V12/Cuentas/validacion?id=" + jsonParameters.id + "&countNumber=" + jsonParameters.countNumber + "&ipAddress=10.160.1.90&tipId="+ jsonParameters.tipId
       When method get
       Then status 200
