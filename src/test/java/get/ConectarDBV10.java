@@ -11,7 +11,7 @@ import java.time.LocalTime;
 import java.util.logging.Logger;
 
 
-public class ConectarDBV12 {
+public class ConectarDBV10 {
 
     public Connection getConn() throws ClassNotFoundException {
 
@@ -23,13 +23,13 @@ public class ConectarDBV12 {
             //String loadDriver = rd.getString("com.ibm.as400.access.AS400JDBCDriver");
             //String loadDriver = "com.ibm.as400.access.AS400JDBCDriver";
             // url of the database
-            String dbURL = "jdbc:as400:10.160.1.82;database name=E20DEE8V";
+            String dbURL = "jdbc:as400:10.160.1.87;database name=E209B18W";
 
             // username to connect db
-            String dbUSERNAME = "GYFQA6";
+            String dbUSERNAME = "GYFQA7";
 
             // password to connect db
-            String dbPASSWORD = "GIROSQA7";
+            String dbPASSWORD = "GIROSGYF";
 
             // load the driver
             Class.forName("com.ibm.as400.access.AS400JDBCDriver");
@@ -37,7 +37,7 @@ public class ConectarDBV12 {
             // get the connection
             con = DriverManager.getConnection(dbURL, dbUSERNAME, dbPASSWORD);
 
-            Logger logger = Logger.getLogger(ConectarDBV12.class.getName());
+            Logger logger = Logger.getLogger(ConectarDBV10.class.getName());
 
             if (con != null) {
                 logger.info("Conexion a BD exitosa");
@@ -54,9 +54,9 @@ public class ConectarDBV12 {
 
     }
 
-    public JSONObject getDataCountSavingSuccessful(Connection con,Integer estadoCuenta, Integer tipoCuenta) {
+    public JSONObject getDataCountSavingSuccessfulV12(Connection con,Integer estadoCuenta) {
         String JsonResult = "";
-        try (PreparedStatement preparedStatement = con.prepareStatement("SELECT * FROM GYFPROAS.SIIN01 N01 INNER JOIN GYFPROAS.SIIC40P C40P ON C40P.C40FUM = N01.N01NID INNER JOIN GYFPROAS.SIIC45 C45 ON C45.C45NID = C40P.C40FUM WHERE N01.N01EST = "+estadoCuenta+" and N01.N01NPO LIKE "+tipoCuenta+" and C45TE1 <> 0")) {
+        try (PreparedStatement preparedStatement = con.prepareStatement("SELECT * FROM GYFPROAS.SIIN01 N01  INNER JOIN GYFPROAS.SIIC40P C40P ON C40P.C40NID = N01.N01NID INNER JOIN GYFPROAS.SIIC45 C45 ON C45.C45NID = C40P.C40NID WHERE N01.N01EST = "+estadoCuenta)) {
 
             //Statement st = con.createStatement();
 
@@ -97,16 +97,8 @@ public class ConectarDBV12 {
                     responseCode = "00000";
                 }
                 JsonResult = "{ " +
-                        "\"msgError\": \""+mensajeError+"\" ," +
                         "\"id\": \"" + rs.getString("C40NID").replace(" ","") + "\" ," +
                         "\"countNumber\": \"00" + rs.getString("N01NPR") + "\" ," +
-                        "\"celNumber\": \"" + cel + "\" ," +
-                        "\"shortName\": \"\" ," +
-                        "\"longName\": \"\" ," +
-                        "\"requestDate\": \"" + fecha + "\" ," +
-                        "\"requestHour\": \"" + hora + "\" ," +
-                        "\"responseCode\": \"" + responseCode + "\" ," +
-                        "\"ipAddress\": \"10.160.1.90\" " +
                         "}";
             }catch (Exception e){
                 String estadoCuentaText = null;
@@ -119,35 +111,12 @@ public class ConectarDBV12 {
                     estadoCuentaText = "saldada";
                 }
 
-                String tipoCuentaText = null;
-                if(tipoCuenta.equals(51)){
-                    tipoCuentaText = "Cuenta ahorros PAP";
-                } else if (tipoCuenta.equals(100)) {
-                    tipoCuentaText = "Cuenta de ahorros Inactiva";
-                } else if (tipoCuenta.equals(101)) {
-                    tipoCuentaText = "Cuenta de ahorro DNT";
-                } else if (tipoCuenta.equals(102)) {
-                    tipoCuentaText = "Cuenta de ahorro ICETEX";
-                } else if (tipoCuenta.equals(151)) {
-                    tipoCuentaText = "Cuenta ahorros PAP Inactiva";
-                } else if (tipoCuenta.equals(3)) {
-                    tipoCuentaText = "Cuenta corriente";
-                }
-
 
                 e.getMessage();
-                System.out.println("No existe un usuario con estado de cuenta :"+ estadoCuentaText + " y tipo cuenta: "+ tipoCuentaText );
+                System.out.println("No existe un usuario con estado de cuenta :"+ estadoCuentaText);
                 JsonResult = "{ " +
                         "\"msgError\": \""+"No se han encontrado resultados con los valores ingresados"+"\" ," +
-                        "\"id\": \"" + "" + "\" ," +
                         "\"countNumber\": \"00" + "00000000000000000" + "\" ," +
-                        "\"celNumber\": \"\" ," +
-                        "\"shortName\": \"\" ," +
-                        "\"longName\": \"\" ," +
-                        "\"requestDate\": \"" + fecha + "\" ," +
-                        "\"requestHour\": \"" + hora + "\" ," +
-                        "\"responseCode\": \"" + "99" + "\" ," +
-                        "\"ipAddress\": \"10.160.1.90\" " +
                         "}";
             }
 
@@ -171,9 +140,9 @@ public class ConectarDBV12 {
 
 
 
-    public JSONObject getParameters201A(Connection con,Integer estadoCuenta, Integer tipoCuenta) {
+    public JSONObject getParameters201AV10(Connection con,Integer estadoCuenta) {
         String JsonResult = "";
-        try (PreparedStatement preparedStatement = con.prepareStatement("SELECT * FROM GYFPROAS.SIIN01 N01 INNER JOIN GYFPROAS.SIIC40P C40P ON C40P.C40FUM = N01.N01NID INNER JOIN GYFPROAS.SIIC45 C45 ON C45.C45NID = C40P.C40FUM WHERE N01.N01EST = "+estadoCuenta+" and N01.N01NPO LIKE "+tipoCuenta+" and C45TE1 <> 0")) {
+        try (PreparedStatement preparedStatement = con.prepareStatement("SELECT * FROM GYFPROAS.SIIN01 N01  INNER JOIN GYFPROAS.SIIC40P C40P ON C40P.C40NID = N01.N01NID INNER JOIN GYFPROAS.SIIC45 C45 ON C45.C45NID = C40P.C40NID WHERE N01.N01EST = "+estadoCuenta)) {
 
             //Statement st = con.createStatement();
 

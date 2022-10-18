@@ -1,10 +1,10 @@
 Feature: check a count - 201A cancelada corriente
 
   Background:
-    * def javaConect = Java.type('get.ConectarDB')
+    * def javaConect = Java.type('get.ConectarDBV12')
     * def result = new javaConect().getConn();
     * def estadoCuenta = 901
-    * def tipoCuenta = 3
+    * def tipoCuenta = 51
     * def jsonParameters = new javaConect().getParameters201A(result, estadoCuenta, tipoCuenta);
     * def jsonResponse = new javaConect().getDataCountSavingSuccessful(result, estadoCuenta, tipoCuenta);
     * def get_token = call read('../get/obtener-token-get.feature')

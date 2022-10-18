@@ -1,7 +1,7 @@
 Feature: check a count - 201A cancelada
 
   Background:
-    * def javaConect = Java.type('get.ConectarDB')
+    * def javaConect = Java.type('get.ConectarDBV10')
     * def result = new javaConect().getConn();
     * def estadoCuenta = 901
     * def tipoCuenta = 51

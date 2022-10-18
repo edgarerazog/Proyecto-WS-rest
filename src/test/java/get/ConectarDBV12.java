@@ -6,19 +6,14 @@ import net.minidev.json.parser.JSONParser;
 import net.minidev.json.parser.ParseException;
 
 import java.sql.*;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
-import java.util.ResourceBundle;
 import java.util.logging.Logger;
 
 
-public class ConectarDB {
+public class ConectarDBV12 {
 
-    public Connection getConn() throws ClassNotFoundException {
+    public Connection getConnV12() throws ClassNotFoundException {
 
         Connection con = null;
 
@@ -42,7 +37,7 @@ public class ConectarDB {
             // get the connection
             con = DriverManager.getConnection(dbURL, dbUSERNAME, dbPASSWORD);
 
-            Logger logger = Logger.getLogger(ConectarDB.class.getName());
+            Logger logger = Logger.getLogger(ConectarDBV12.class.getName());
 
             if (con != null) {
                 logger.info("Conexion a BD exitosa");
@@ -59,9 +54,9 @@ public class ConectarDB {
 
     }
 
-    public JSONObject getDataCountSavingSuccessful(Connection con,Integer estadoCuenta, Integer tipoCuenta) {
+    public JSONObject getDataCountSavingSuccessful(Connection con,Integer estadoCuenta) {
         String JsonResult = "";
-        try (PreparedStatement preparedStatement = con.prepareStatement("SELECT * FROM GYFPROAS.SIIN01 N01 INNER JOIN GYFPROAS.SIIC40P C40P ON C40P.C40FUM = N01.N01NID INNER JOIN GYFPROAS.SIIC45 C45 ON C45.C45NID = C40P.C40FUM WHERE N01.N01EST = "+estadoCuenta+" and N01.N01NPO LIKE "+tipoCuenta+" and C45TE1 <> 0")) {
+        try (PreparedStatement preparedStatement = con.prepareStatement("SELECT * FROM GYFPROAS.SIIN01 N01  INNER JOIN GYFPROAS.SIIC40P C40P ON C40P.C40FUM = N01.N01NID INNER JOIN GYFPROAS.SIIC45 C45 ON C45.C45NID = C40P.C40FUM WHERE N01.N01EST = "+estadoCuenta)) {
 
             //Statement st = con.createStatement();
 
@@ -124,24 +119,9 @@ public class ConectarDB {
                     estadoCuentaText = "saldada";
                 }
 
-                String tipoCuentaText = null;
-                if(tipoCuenta.equals(51)){
-                    tipoCuentaText = "Cuenta ahorros PAP";
-                } else if (tipoCuenta.equals(100)) {
-                    tipoCuentaText = "Cuenta de ahorros Inactiva";
-                } else if (tipoCuenta.equals(101)) {
-                    tipoCuentaText = "Cuenta de ahorro DNT";
-                } else if (tipoCuenta.equals(102)) {
-                    tipoCuentaText = "Cuenta de ahorro ICETEX";
-                } else if (tipoCuenta.equals(151)) {
-                    tipoCuentaText = "Cuenta ahorros PAP Inactiva";
-                } else if (tipoCuenta.equals(3)) {
-                    tipoCuentaText = "Cuenta corriente";
-                }
-
 
                 e.getMessage();
-                System.out.println("No existe un usuario con estado de cuenta :"+ estadoCuentaText + " y tipo cuenta: "+ tipoCuentaText );
+                System.out.println("No existe un usuario con estado de cuenta :"+ estadoCuentaText);
                 JsonResult = "{ " +
                         "\"msgError\": \""+"No se han encontrado resultados con los valores ingresados"+"\" ," +
                         "\"id\": \"" + "" + "\" ," +
@@ -176,9 +156,9 @@ public class ConectarDB {
 
 
 
-    public JSONObject getParameters201A(Connection con,Integer estadoCuenta, Integer tipoCuenta) {
+    public JSONObject getParameters201AV12(Connection con,Integer estadoCuenta) {
         String JsonResult = "";
-        try (PreparedStatement preparedStatement = con.prepareStatement("SELECT * FROM GYFPROAS.SIIN01 N01 INNER JOIN GYFPROAS.SIIC40P C40P ON C40P.C40FUM = N01.N01NID INNER JOIN GYFPROAS.SIIC45 C45 ON C45.C45NID = C40P.C40FUM WHERE N01.N01EST = "+estadoCuenta+" and N01.N01NPO LIKE "+tipoCuenta+" and C45TE1 <> 0")) {
+        try (PreparedStatement preparedStatement = con.prepareStatement("SELECT * FROM GYFPROAS.SIIN01 N01 INNER JOIN GYFPROAS.SIIC40P C40P ON C40P.C40FUM = N01.N01NID INNER JOIN GYFPROAS.SIIC45 C45 ON C45.C45NID = C40P.C40FUM WHERE N01.N01EST = "+estadoCuenta)) {
 
             //Statement st = con.createStatement();
 

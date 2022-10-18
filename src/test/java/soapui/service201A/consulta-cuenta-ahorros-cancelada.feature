@@ -1,7 +1,7 @@
-Feature: servicio 201A para cuenta ahorros activa
+Feature: servicio 201A para cuenta ahorros cancelada
 
 
-  Scenario: cuenta v10 activa
+  Scenario: cuenta v10 cancelada
     * string stext = karate.readAsString('Data.csv')
     * print stext
     * replace stext
@@ -12,15 +12,23 @@ Feature: servicio 201A para cuenta ahorros activa
     * def idUno = txtjson[0].id
     * print idUno
     * url 'http://10.160.1.90/GIROS_tst/GYFCOBOLServices/wsgyg15.asmx'
+    * def javaConectV10 = Java.type('get.ConectarDBV10')
+    * def javaConectV12 = Java.type('get.ConectarDBV12')
+    * def result = new javaConectV10().getConn();
+    * def resultV12 = new javaConectV12().getConnV12();
+    * def estadoCuenta = 901
+    * def jsonCuentaCanceladaV10 = new javaConectV10().getParameters201AV10(result, estadoCuenta);
+    * def jsonCuentaCanceladaV12 = new javaConectV12().getParameters201AV12(resultV12, estadoCuenta);
+
     Given request
     """
      <soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:jdb="http://jdbcservices.sbi.integracion.giros">
        <soapenv:Header/>
        <soapenv:Body>
             <jdb:generarRespuesta>
-               <id>#(txtjson[0].idV10)</id>
-               <countNumber>#(txtjson[0].countNumberV10)</countNumber>
-               <ipAddress>#(txtjson[0].ipV10)</ipAddress>
+               <id>#(jsonCuentaCanceladaV10.id)</id>
+               <countNumber>#(jsonCuentaCanceladaV10.countNumber)</countNumber>
+               <ipAddress>10.160.1.90</ipAddress>
             </jdb:generarRespuesta>
          </soapenv:Body>
       </soapenv:Envelope>
@@ -56,10 +64,10 @@ Feature: servicio 201A para cuenta ahorros activa
    <soapenv:Header/>
    <soapenv:Body>
       <jdb:generarRespuesta>
-            <id>#(txtjson[0].idV12)</id>
-            <tipId>#(txtjson[0].tipoIdV12)</tipId>
-            <countNumber>#(txtjson[0].countNumberV12)</countNumber>
-            <ipAddress>#(txtjson[0].ipV12)</ipAddress>
+            <id>#(jsonCuentaCanceladaV12.id)</id>
+            <tipId>#(jsonCuentaCanceladaV12.tipId)</tipId>
+            <countNumber>#(jsonCuentaCanceladaV12.countNumber)</countNumber>
+            <ipAddress>10.160.1.90</ipAddress>
       </jdb:generarRespuesta>
    </soapenv:Body>
 </soapenv:Envelope>
@@ -113,8 +121,8 @@ Feature: servicio 201A para cuenta ahorros activa
 
 
     # Valdiar que los campos de id, ip y cuenta con 2 ceros extra sean los mismos de la peticion
-    And match idV12 == '#(txtjson[0].idV12)'
-    And match countNumberV12 contains "00"+txtjson[0].countNumberV12
+    And match idV12 == '#(jsonCuentaCanceladaV12.id)'
+    And match countNumberV12 contains "00"+jsonCuentaCanceladaV12.countNumber
     And match ipAddressV12 == '#(txtjson[0].ipV12)'
 
     #Validar formato fehca y hora

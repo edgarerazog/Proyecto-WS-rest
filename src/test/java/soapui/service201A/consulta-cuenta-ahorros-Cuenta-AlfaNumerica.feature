@@ -18,9 +18,9 @@ Feature: servicio 201A para cuenta ahorros activa
        <soapenv:Header/>
        <soapenv:Body>
             <jdb:generarRespuesta>
-               <id>#(txtjson[0].idV10)</id>
-               <countNumber>#(txtjson[0].countNumberV10)</countNumber>
-               <ipAddress>#(txtjson[0].ipV10)</ipAddress>
+               <id>8600379004</id>
+               <countNumber>Casa1</countNumber>
+               <ipAddress>10.160.1.90</ipAddress>
             </jdb:generarRespuesta>
          </soapenv:Body>
       </soapenv:Envelope>
@@ -56,10 +56,10 @@ Feature: servicio 201A para cuenta ahorros activa
    <soapenv:Header/>
    <soapenv:Body>
       <jdb:generarRespuesta>
-            <id>#(txtjson[0].idV12)</id>
-            <tipId>#(txtjson[0].tipoIdV12)</tipId>
-            <countNumber>#(txtjson[0].countNumberV12)</countNumber>
-            <ipAddress>#(txtjson[0].ipV12)</ipAddress>
+            <id>#(txtjson[1].idV12)</id>
+            <tipId>#(txtjson[1].tipoIdV12)</tipId>
+            <countNumber>Casa1</countNumber>
+            <ipAddress>#(txtjson[1].ipV12)</ipAddress>
       </jdb:generarRespuesta>
    </soapenv:Body>
 </soapenv:Envelope>
@@ -68,9 +68,12 @@ Feature: servicio 201A para cuenta ahorros activa
     When method POST
     Then status 200
     And print response
+
+    #Se guarda la misma ruta de v10 si existe
     * xmlstring stringresponse2 = /Envelope/Body/generarRespuestaResponse/generarRespuestaReturn
 
-    #And match stringresponse2 contains 'celNumber'
+
+     # Validar la existencia de los campos
     And match stringresponse2 contains 'responseCode'
     And match stringresponse1 contains 'responseCode'
     And match stringresponse2 contains 'msgError'
@@ -104,25 +107,21 @@ Feature: servicio 201A para cuenta ahorros activa
     And def requestHourV12 = /Envelope/Body/generarRespuestaResponse/generarRespuestaReturn/requestHour
     And def ipAddressV12 = /Envelope/Body/generarRespuestaResponse/generarRespuestaReturn/ipAddress
 
-    #And match stringresponse1 contains stringresponse2
-
-    # Validar el mismo response code
-    And match responseCodeV10 == responseCodeV12
-
-    # Validar la existencia de los campos
-
-
-    # Valdiar que los campos de id, ip y cuenta con 2 ceros extra sean los mismos de la peticion
-    And match idV12 == '#(txtjson[0].idV12)'
-    And match countNumberV12 contains "00"+txtjson[0].countNumberV12
-    And match ipAddressV12 == '#(txtjson[0].ipV12)'
-
-    #Validar formato fehca y hora
+    # Validar el mismo Codigo de error
     * def javaValidaciones = Java.type('get.Validaciones')
-    * def resultValidacionFecha = new javaValidaciones().validacionFecha(requestDateV12,requestDateV10);
-    * def resultvalidacionHora = new javaValidaciones().validacionHora(requestHourV12,requestHourV10);
-    And match resultValidacionFecha == true
-    And match resultvalidacionHora == true
+    * def resultValidacionMismoError = new javaValidaciones().validacionErrores(msgErrorV12,msgErrorV10);
+    And match resultValidacionMismoError == true
+
+
+
+    # Validar campos vacios
+
+
+
+
+
+
+
 
 
 

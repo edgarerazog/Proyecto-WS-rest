@@ -1,7 +1,7 @@
-Feature: servicio 201A para cuenta ahorros activa
+Feature: servicio 201A para cuenta ahorros inexistente
 
 
-  Scenario: cuenta v10 activa
+  Scenario: cuenta v10 inexistente
     * string stext = karate.readAsString('Data.csv')
     * print stext
     * replace stext
@@ -18,9 +18,9 @@ Feature: servicio 201A para cuenta ahorros activa
        <soapenv:Header/>
        <soapenv:Body>
             <jdb:generarRespuesta>
-               <id>#(txtjson[0].idV10)</id>
-               <countNumber>#(txtjson[0].countNumberV10)</countNumber>
-               <ipAddress>#(txtjson[0].ipV10)</ipAddress>
+               <id>#(txtjson[2].idV10)</id>
+               <countNumber>#(txtjson[2].countNumberV10)</countNumber>
+               <ipAddress>#(txtjson[2].ipV10)</ipAddress>
             </jdb:generarRespuesta>
          </soapenv:Body>
       </soapenv:Envelope>
@@ -56,10 +56,10 @@ Feature: servicio 201A para cuenta ahorros activa
    <soapenv:Header/>
    <soapenv:Body>
       <jdb:generarRespuesta>
-            <id>#(txtjson[0].idV12)</id>
-            <tipId>#(txtjson[0].tipoIdV12)</tipId>
-            <countNumber>#(txtjson[0].countNumberV12)</countNumber>
-            <ipAddress>#(txtjson[0].ipV12)</ipAddress>
+            <id>#(txtjson[2].idV12)</id>
+            <tipId>#(txtjson[2].tipoIdV12)</tipId>
+            <countNumber>#(txtjson[2].countNumberV12)</countNumber>
+            <ipAddress>#(txtjson[2].ipV12)</ipAddress>
       </jdb:generarRespuesta>
    </soapenv:Body>
 </soapenv:Envelope>
@@ -113,9 +113,9 @@ Feature: servicio 201A para cuenta ahorros activa
 
 
     # Valdiar que los campos de id, ip y cuenta con 2 ceros extra sean los mismos de la peticion
-    And match idV12 == '#(txtjson[0].idV12)'
-    And match countNumberV12 contains "00"+txtjson[0].countNumberV12
-    And match ipAddressV12 == '#(txtjson[0].ipV12)'
+    And match idV12 == '#(txtjson[2].idV12)'
+    And match countNumberV12 contains "00"+txtjson[2].countNumberV12
+    And match ipAddressV12 == '#(txtjson[2].ipV12)'
 
     #Validar formato fehca y hora
     * def javaValidaciones = Java.type('get.Validaciones')

@@ -4,7 +4,7 @@ Feature: check a count - 201A saldada
     * def get_token = call read('obtener-token-get.feature')
     * def var_string = "Bearer " + get_token.token
     * configure headers = { 'Authorization': '#(var_string)'}
-    * def javaConect = Java.type('get.ConectarDB')
+    * def javaConect = Java.type('get.ConectarDBV12')
     * def result = new javaConect().getConn();
     * def estadoCuenta = 902
     * def tipoCuenta = 51
