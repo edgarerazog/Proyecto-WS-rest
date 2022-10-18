@@ -68,6 +68,8 @@ Feature: servicio 201A para cuenta ahorros activa
     When method POST
     Then status 200
     And print response
+
+
     * xmlstring stringresponse2 = /Envelope/Body/generarRespuestaResponse/generarRespuestaReturn
 
     #And match stringresponse2 contains 'celNumber'
@@ -120,7 +122,7 @@ Feature: servicio 201A para cuenta ahorros activa
     #Validar formato fehca y hora
     * def javaValidaciones = Java.type('get.Validaciones')
     * def resultValidacionFecha = new javaValidaciones().validacionFecha(requestDateV12,requestDateV10);
-    * def resultvalidacionHora = new javaValidaciones().validacionErrores(requestHourV12,requestHourV10);
+    * def resultvalidacionHora = new javaValidaciones().validacionHora(requestHourV12,requestHourV10);
     And match resultValidacionFecha == true
     And match resultvalidacionHora == true
 
