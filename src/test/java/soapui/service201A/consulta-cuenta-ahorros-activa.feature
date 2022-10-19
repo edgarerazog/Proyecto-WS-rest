@@ -3,14 +3,14 @@ Feature: servicio 201A para cuenta ahorros activa
 
   Scenario: cuenta v10 activa
     * string stext = karate.readAsString('Data.csv')
-    * print stext
+  #  * print stext
     * replace stext
       | token | value |
       | ;     | ','   |
     * csv txtjson = stext
-    * print txtjson
+   # * print txtjson
     * def idUno = txtjson[0].id
-    * print idUno
+  #  * print idUno
     * url 'http://10.160.1.90/GIROS_tst/GYFCOBOLServices/wsgyg15.asmx'
     Given request
     """
@@ -30,6 +30,8 @@ Feature: servicio 201A para cuenta ahorros activa
     Then status 200
     And print response
     * xml responseTotalV10 = response
+    #* json jsonresponsev10 = responseTotalV10
+    #* print jsonresponsev10
 
     #optencion de los datos de respuesta v10
     And def responseCodeV10 = /Envelope/Body/generarRespuestaResponse/generarRespuestaReturn/responseCode
@@ -42,6 +44,20 @@ Feature: servicio 201A para cuenta ahorros activa
     And def requestDateV10 = /Envelope/Body/generarRespuestaResponse/generarRespuestaReturn/requestDate
     And def requestHourV10 = /Envelope/Body/generarRespuestaResponse/generarRespuestaReturn/requestHour
     And def ipAddressV10 = /Envelope/Body/generarRespuestaResponse/generarRespuestaReturn/ipAddress
+    And def schemaV10 = /Envelope/Body/generarRespuestaResponse/generarRespuestaReturn
+    * json jsonv10 = schemaV10
+    * string stringv10 = jsonv10.generarRespuestaReturn._
+    #* print stringv10
+    #And match jsonv10.generarRespuestaReturn._ == read("esqueleto.json")
+
+
+    # Validaciones campos v10
+    And match idV10 == '#(txtjson[0].idV10)'
+    And match countNumberV10 contains "00"+txtjson[0].countNumberV10
+    And match ipAddressV10 == '#(txtjson[0].ipV10)'
+    And match celNumberV10 != ''
+    And match longNameV10 == ''
+    And match shortNameV10 == ''
 
 
     #And match shortName == ''
@@ -73,26 +89,7 @@ Feature: servicio 201A para cuenta ahorros activa
     * xmlstring stringresponse2 = /Envelope/Body/generarRespuestaResponse/generarRespuestaReturn
 
     #And match stringresponse2 contains 'celNumber'
-    And match stringresponse2 contains 'responseCode'
-    And match stringresponse1 contains 'responseCode'
-    And match stringresponse2 contains 'msgError'
-    And match stringresponse1 contains 'msgError'
-    And match stringresponse2 contains 'id'
-    And match stringresponse1 contains 'id'
-    And match stringresponse2 contains 'countNumber'
-    And match stringresponse1 contains 'countNumber'
-    And match stringresponse2 contains 'celNumber'
-    And match stringresponse1 contains 'celNumber'
-    And match stringresponse2 contains 'shortName'
-    And match stringresponse1 contains 'shortName'
-    And match stringresponse2 contains 'longName'
-    And match stringresponse1 contains 'longName'
-    And match stringresponse2 contains 'requestDate'
-    And match stringresponse1 contains 'requestDate'
-    And match stringresponse2 contains 'requestHour'
-    And match stringresponse1 contains 'requestHour'
-    And match stringresponse2 contains 'ipAddress'
-    And match stringresponse1 contains 'ipAddress'
+
 
     #Optencion de los datos de respuesta v12
     And def responseCodeV12 = /Envelope/Body/generarRespuestaResponse/generarRespuestaReturn/responseCode
@@ -105,19 +102,25 @@ Feature: servicio 201A para cuenta ahorros activa
     And def requestDateV12 = /Envelope/Body/generarRespuestaResponse/generarRespuestaReturn/requestDate
     And def requestHourV12 = /Envelope/Body/generarRespuestaResponse/generarRespuestaReturn/requestHour
     And def ipAddressV12 = /Envelope/Body/generarRespuestaResponse/generarRespuestaReturn/ipAddress
+    And def schemaV12 = /Envelope/Body/generarRespuestaResponse/generarRespuestaReturn
+    * json jsonv12 = schemaV12
+    * string stringv12 = jsonv12.generarRespuestaReturn
+    And match jsonv12.generarRespuestaReturn contains read("esqueleto.json")
 
-    #And match stringresponse1 contains stringresponse2
+
 
     # Validar el mismo response code
     And match responseCodeV10 == responseCodeV12
 
-    # Validar la existencia de los campos
 
 
     # Valdiar que los campos de id, ip y cuenta con 2 ceros extra sean los mismos de la peticion
     And match idV12 == '#(txtjson[0].idV12)'
     And match countNumberV12 contains "00"+txtjson[0].countNumberV12
     And match ipAddressV12 == '#(txtjson[0].ipV12)'
+    And match celNumberV12 != ''
+    And match longNameV12 == ''
+    And match shortNameV12 == ''
 
     #Validar formato fehca y hora
     * def javaValidaciones = Java.type('get.Validaciones')
@@ -125,6 +128,11 @@ Feature: servicio 201A para cuenta ahorros activa
     * def resultvalidacionHora = new javaValidaciones().validacionHora(requestHourV12,requestHourV10);
     And match resultValidacionFecha == true
     And match resultvalidacionHora == true
+
+    #Validar Schemas
+  * def resultv10 = new javaValidaciones().eliminarCaracteres(stringv10)
+    * def resultv12 = new javaValidaciones().eliminarCaracteres(stringv12)
+    And assert resultv10 == resultv12
 
 
 

@@ -1,0 +1,14 @@
+{
+      "msgError": '##null',
+      "id": "#notnull",
+      "countNumber": "#notnull",
+      "celNumber": "#notnull",
+      "shortName": '##null',
+      "longName": '##null',
+      "requestDate": "#notnull",
+      "requestHour": "#notnull",
+      "responseCode": "#notnull",
+      "ipAddress": "#notnull"
+}
+
+

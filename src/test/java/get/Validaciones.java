@@ -29,7 +29,7 @@ public class Validaciones {
 
         boolean horaValidada = false;
 
-        if(longitud1 == 8 && longitud1 == 8){
+        if(longitud1 == 8 && longitud2 == 8){
             boolean horaV12 = horav12.substring(0,1).matches("[0-9]*");
             boolean minutosV12 = horav12.substring(3,4).matches("[0-9]*");
             boolean segundosV12 = horav12.substring(6,7).matches("[0-9]*");
@@ -65,10 +65,29 @@ public class Validaciones {
             validacionErrores = true;
         }
 
-
-
+        
 
         return validacionErrores;
     }
 
-}
+
+    public String eliminarCaracteres (String v10){
+
+        String charsToRemove = "0123456789";
+        for (char c : charsToRemove.toCharArray()) {
+            v10 = v10.replace(String.valueOf(c), "");
+        }
+        System.out.println(v10);
+        return v10;
+
+    }
+
+
+
+
+
+
+
+
+
+    }
