@@ -3,14 +3,14 @@ Feature: servicio 201A para cuenta ahorros inexistente
 
   Scenario: cuenta v10 inexistente
     * string stext = karate.readAsString('Data.csv')
-    * print stext
+    #* print stext
     * replace stext
       | token | value |
       | ;     | ','   |
     * csv txtjson = stext
-    * print txtjson
+    #* print txtjson
     * def idUno = txtjson[0].id
-    * print idUno
+    #* print idUno
     * url 'http://10.160.1.90/GIROS_tst/GYFCOBOLServices/wsgyg15.asmx'
     Given request
     """
@@ -42,6 +42,9 @@ Feature: servicio 201A para cuenta ahorros inexistente
     And def requestDateV10 = /Envelope/Body/generarRespuestaResponse/generarRespuestaReturn/requestDate
     And def requestHourV10 = /Envelope/Body/generarRespuestaResponse/generarRespuestaReturn/requestHour
     And def ipAddressV10 = /Envelope/Body/generarRespuestaResponse/generarRespuestaReturn/ipAddress
+    And def schemaV10 = /Envelope/Body/generarRespuestaResponse/generarRespuestaReturn
+    * json jsonv10 = schemaV10
+    * string stringv10 = jsonv10.generarRespuestaReturn._
 
 
     #And match shortName == ''
@@ -103,6 +106,9 @@ Feature: servicio 201A para cuenta ahorros inexistente
     And def requestDateV12 = /Envelope/Body/generarRespuestaResponse/generarRespuestaReturn/requestDate
     And def requestHourV12 = /Envelope/Body/generarRespuestaResponse/generarRespuestaReturn/requestHour
     And def ipAddressV12 = /Envelope/Body/generarRespuestaResponse/generarRespuestaReturn/ipAddress
+    And def schemaV12 = /Envelope/Body/generarRespuestaResponse/generarRespuestaReturn
+    * json jsonv12 = schemaV12
+    * string stringv12 = jsonv12.generarRespuestaReturn
 
     #And match stringresponse1 contains stringresponse2
 
@@ -123,6 +129,11 @@ Feature: servicio 201A para cuenta ahorros inexistente
     * def resultvalidacionHora = new javaValidaciones().validacionHora(requestHourV12,requestHourV10);
     And match resultValidacionFecha == true
     And match resultvalidacionHora == true
+
+    #Validar Schemas
+    * def resultv10 = new javaValidaciones().eliminarCaracteres(stringv10)
+    * def resultv12 = new javaValidaciones().eliminarCaracteres(stringv12)
+    And assert resultv10 == resultv12
 
 
 

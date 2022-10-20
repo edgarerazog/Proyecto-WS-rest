@@ -3,14 +3,14 @@ Feature: servicio 201A para cuenta ahorros saldada
 
   Scenario: cuenta v10 saldada
     * string stext = karate.readAsString('Data.csv')
-    * print stext
+    #* print stext
     * replace stext
       | token | value |
       | ;     | ','   |
     * csv txtjson = stext
-    * print txtjson
+    #* print txtjson
     * def idUno = txtjson[0].id
-    * print idUno
+    #* print idUno
     * url 'http://10.160.1.90/GIROS_tst/GYFCOBOLServices/wsgyg15.asmx'
     * def javaConectV10 = Java.type('get.ConectarDBV10')
     * def javaConectV12 = Java.type('get.ConectarDBV12')
@@ -50,6 +50,9 @@ Feature: servicio 201A para cuenta ahorros saldada
     And def requestDateV10 = /Envelope/Body/generarRespuestaResponse/generarRespuestaReturn/requestDate
     And def requestHourV10 = /Envelope/Body/generarRespuestaResponse/generarRespuestaReturn/requestHour
     And def ipAddressV10 = /Envelope/Body/generarRespuestaResponse/generarRespuestaReturn/ipAddress
+    And def schemaV10 = /Envelope/Body/generarRespuestaResponse/generarRespuestaReturn
+    * json jsonv10 = schemaV10
+    * string stringv10 = jsonv10.generarRespuestaReturn._
 
 
     #And match shortName == ''
@@ -111,11 +114,14 @@ Feature: servicio 201A para cuenta ahorros saldada
     And def requestDateV12 = /Envelope/Body/generarRespuestaResponse/generarRespuestaReturn/requestDate
     And def requestHourV12 = /Envelope/Body/generarRespuestaResponse/generarRespuestaReturn/requestHour
     And def ipAddressV12 = /Envelope/Body/generarRespuestaResponse/generarRespuestaReturn/ipAddress
+    And def schemaV12 = /Envelope/Body/generarRespuestaResponse/generarRespuestaReturn
+    * json jsonv12 = schemaV12
+    * string stringv12 = jsonv12.generarRespuestaReturn
 
     #And match stringresponse1 contains stringresponse2
 
     # Validar el mismo response code
-    And match responseCodeV10 == responseCodeV12
+    And match msgErrorV10 ==msgErrorV12
 
     # Validar la existencia de los campos
 
@@ -131,6 +137,11 @@ Feature: servicio 201A para cuenta ahorros saldada
     * def resultvalidacionHora = new javaValidaciones().validacionHora(requestHourV12,requestHourV10);
     And match resultValidacionFecha == true
     And match resultvalidacionHora == true
+
+     #Validar Schemas
+    * def resultv10 = new javaValidaciones().eliminarCaracteres(stringv10)
+    * def resultv12 = new javaValidaciones().eliminarCaracteres(stringv12)
+    And assert resultv10 == resultv12
 
 
 

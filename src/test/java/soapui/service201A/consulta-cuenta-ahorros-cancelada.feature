@@ -1,6 +1,5 @@
 Feature: servicio 201A para cuenta ahorros cancelada
 
-
   Scenario: cuenta v10 cancelada
     * string stext = karate.readAsString('Data.csv')
     #* print stext
@@ -53,7 +52,7 @@ Feature: servicio 201A para cuenta ahorros cancelada
     And def schemaV10 = /Envelope/Body/generarRespuestaResponse/generarRespuestaReturn
     * json jsonv10 = schemaV10
     * string stringv10 = jsonv10.generarRespuestaReturn._
-    #And match jsonv10.generarRespuestaReturn._ contains read("esqueleto.json")
+    And match jsonv10.generarRespuestaReturn._ contains read("esqueleto.json")
 
 
     #And match shortName == ''
@@ -65,7 +64,6 @@ Feature: servicio 201A para cuenta ahorros cancelada
     And match shortNameV10 == ''
 
     * xmlstring stringresponse1 = /Envelope/Body/generarRespuestaResponse/generarRespuestaReturn
-
 
 
     * url 'http://10.122.5.250:8080/WSGYG15-0.0.1-SNAPSHOT/WSGYG15'
@@ -90,27 +88,7 @@ Feature: servicio 201A para cuenta ahorros cancelada
     And print response
     * xmlstring stringresponse2 = /Envelope/Body/generarRespuestaResponse/generarRespuestaReturn
 
-    #And match stringresponse2 contains 'celNumber'
-    And match stringresponse2 contains 'responseCode'
-    And match stringresponse1 contains 'responseCode'
-    And match stringresponse2 contains 'msgError'
-    And match stringresponse1 contains 'msgError'
-    And match stringresponse2 contains 'id'
-    And match stringresponse1 contains 'id'
-    And match stringresponse2 contains 'countNumber'
-    And match stringresponse1 contains 'countNumber'
-    And match stringresponse2 contains 'celNumber'
-    And match stringresponse1 contains 'celNumber'
-    And match stringresponse2 contains 'shortName'
-    And match stringresponse1 contains 'shortName'
-    And match stringresponse2 contains 'longName'
-    And match stringresponse1 contains 'longName'
-    And match stringresponse2 contains 'requestDate'
-    And match stringresponse1 contains 'requestDate'
-    And match stringresponse2 contains 'requestHour'
-    And match stringresponse1 contains 'requestHour'
-    And match stringresponse2 contains 'ipAddress'
-    And match stringresponse1 contains 'ipAddress'
+
 
     #Optencion de los datos de respuesta v12
     And def responseCodeV12 = /Envelope/Body/generarRespuestaResponse/generarRespuestaReturn/responseCode
@@ -126,15 +104,11 @@ Feature: servicio 201A para cuenta ahorros cancelada
     And def schemaV12 = /Envelope/Body/generarRespuestaResponse/generarRespuestaReturn
     * json jsonv12 = schemaV12
     * string stringv12 = jsonv12.generarRespuestaReturn
-    #And match jsonv12.generarRespuestaReturn contains read("esqueleto.json")
+    And match jsonv12.generarRespuestaReturn contains read("esqueleto.json")
 
-    #And match stringresponse1 contains stringresponse2
 
     # Validar el mismo response code
     And match responseCodeV10 == responseCodeV12
-
-    # Validar la existencia de los campos
-
 
     # Valdiar que los campos de id, ip y cuenta con 2 ceros extra sean los mismos de la peticion
     And match idV12 == '#(jsonCuentaCanceladaV12.id)'
