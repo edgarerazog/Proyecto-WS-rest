@@ -23,7 +23,7 @@ import net.masterthought.cucumber.Configuration;
 public class RunnerServices {
     @Test
     public void testParallel() {
-        Results results = Runner.path("classpath:get/consultar-cuenta-ahorros-activa-get.feature")
+        Results results = Runner.path("")
                 .outputCucumberJson(true)
                 .tags("~@ignore")
                 .parallel(1);
